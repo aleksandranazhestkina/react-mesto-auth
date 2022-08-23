@@ -1,0 +1,15 @@
+.header__auth {
+    text-decoration: none;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    color: #FFF;
+    max-height: 22px;
+    margin-bottom: 48px;
+    transform: opacity 0.4s;
+}
+.header__auth:hover {
+    opacity: 0.6;
+}

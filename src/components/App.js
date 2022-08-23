@@ -15,6 +15,7 @@ import "../index.css";
 import ImagePopup from "./ImagePopup.js";
 import { CurrentUserContext } from "../context/CurrentUserContext";
 import { api } from "../utils/Api.js";
+import { auth } from "../utils/auth.js";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
@@ -27,6 +28,9 @@ function App() {
   const [cards, setCards] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState({ name: "", about: "", avatar: "" });
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [RegistrationIn, setRegistrationIn] = React.useState(false);
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
+  const [email, setEmail] = React.useState("");
   const history = useHistory();
 
   React.useEffect(() => {
@@ -123,16 +127,27 @@ function App() {
       })
   }
 
-  
+  function onRegistration() {
+    setRegistrationIn(true);
+    setIsInfoTooltipOpen(true);
+  }
+
+  function isInfoTooltipClose() {
+    history.push("/sing-in");
+    setIsInfoTooltipOpen(false);
+  }
 
   return (
     <div>
       <CurrentUserContext.Provider value={currentUser}>
-        <Header />
+        <Header isLoggedIn={isLoggedIn}
+          email={email}
+        />
       
         <Switch>  
           <ProtectedRoute exact path="/"
           component={Main}
+          isLoggedIn={isLoggedIn}
           onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
           onEditAvatar={handleEditAvatarClick}
@@ -142,7 +157,7 @@ function App() {
           cards={cards}
         />
           <Route path="/sing-up">
-            <Register />
+            <Register onRegistration={onRegistration} />
           </Route>
           <Route path="/sing-in">
             <Login />
@@ -173,6 +188,9 @@ function App() {
           isOpen={isImagePopupOpen}
           onClose={closeAllPopups}
         />
+
+        <InfoTooltip isOpen={isInfoTooltipOpen} RegistrationIn={RegistrationIn} onClose={isInfoTooltipClose}/>
+        
       </CurrentUserContext.Provider>
     </div>
   );
