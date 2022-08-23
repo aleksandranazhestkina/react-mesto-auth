@@ -1,7 +1,11 @@
 import React from "react";
-import { Route } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import Header from "./Header.js";
 import Main from "./Main.js";
+import Register from "./Register.js";
+import Login from "./Login.js";
+import ProtectedRoute from "./ProtectedRoute.js";
+import InfoTooltip from "./InfoTooltip.js";
 import Footer from "./Footer.js";
 import PopupWithForm from "./PopupWithForm.js";
 import EditProfilePopup from "./EditProfilePopup";
@@ -22,15 +26,18 @@ function App() {
   const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
   const [cards, setCards] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState({ name: "", about: "", avatar: "" });
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const history = useHistory();
 
   React.useEffect(() => {
+    if(isLoggedIn)
     Promise.all([api.getUserInfo(), api.getInitialCards()])
       .then(([data, cards]) => {
         setCurrentUser(data);
         setCards(cards);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [isLoggedIn]);
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -116,11 +123,16 @@ function App() {
       })
   }
 
+  
+
   return (
     <div>
       <CurrentUserContext.Provider value={currentUser}>
         <Header />
-        <Main
+      
+        <Switch>  
+          <ProtectedRoute exact path="/"
+          component={Main}
           onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
           onEditAvatar={handleEditAvatarClick}
@@ -129,7 +141,16 @@ function App() {
           onCardDelete={handleCardDelete}
           cards={cards}
         />
+          <Route path="/sing-up">
+            <Register />
+          </Route>
+          <Route path="/sing-in">
+            <Login />
+          </Route>
+        </Switch>
+
         <Footer />
+
         <EditAvatarPopup isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
 

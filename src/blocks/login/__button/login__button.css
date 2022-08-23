@@ -1,0 +1,11 @@
+.login__button {
+    margin-top: 216px;
+    border-radius: 2px;
+    min-height: 50px;
+    min-width: 358px;
+    transform: opacity 0.4s;
+}
+
+.login__button:hover {
+    opacity: 0.6;
+}

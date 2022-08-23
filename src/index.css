@@ -53,3 +53,9 @@
 @import url(./blocks/popup/__body/_confirm/popup__body_confirm.css);
 @import url(./blocks/error/error.css);
 @import url(./blocks/error/_visible/error_visible.css);
+@import url(./blocks/login/login.css);
+@import url(./blocks/login/__button/login__button.css);
+@import url(./blocks/login/__form/login__form.css);
+@import url(./blocks/login/__input/login__input.css);
+@import url(./blocks/login/__span/login__span.css);
+@import url(./blocks/login/__title/login__title.css);
