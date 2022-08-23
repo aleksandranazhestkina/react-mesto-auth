@@ -1,0 +1,5 @@
+.popup__body_image {
+  background-color: transparent;
+  border-radius: 0;
+  min-width: min-content;
+}

@@ -1,0 +1,9 @@
+.popup__button-close_confirm {
+  transform: translate(40px, -20px);
+}
+
+@media screen and (max-width: 900px) {
+  .popup__button-close_confirm {
+    transform: translate(20px, -20px);
+  }
+}

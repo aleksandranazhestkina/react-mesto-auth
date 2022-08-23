@@ -1,0 +1,12 @@
+.popup__body_confirm {
+  min-width: 430px;
+  max-height: 181px;
+}
+
+@media screen and (max-width: 900px) {
+  .popup__body_confirm {
+    min-width: 240px;
+    max-width: 282px;
+    max-height: 150px;
+  }
+}

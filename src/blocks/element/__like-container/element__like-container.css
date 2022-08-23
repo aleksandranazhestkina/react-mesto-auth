@@ -1,0 +1,11 @@
+.element__like-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-width: 22px;
+  padding-right: 20px;
+  max-height: 36px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
