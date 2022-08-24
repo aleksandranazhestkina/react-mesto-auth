@@ -96,15 +96,6 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-  React.useEffect(() => {
-    api
-      .getUserInfo()
-      .then(([data]) => {
-        setCurrentUser({ data });
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
   function handleUpdateUser(data) {
     api
       .editProfile(data.name, data.about)
