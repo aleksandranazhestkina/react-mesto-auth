@@ -1,54 +1,51 @@
-class Auth {
-    constructor(options) {
-        this._url = options.url;
-    }
+export const BASE_URL = "https://auth.nomoreparties.co";
 
-    _checkStatus(res) {
-        if (res.ok) {
-          return res.json();
-        } else {
-          return Promise.reject(
-            `Произошла ошибка ${res.status} - ${res.statusText}`
-          );
-        }
-    };
+function checkStatus(res) {
+  if (res.ok) {
+    return res.json();
+  } else {
+    return Promise.reject(`Произошла ошибка ${res.status} - ${res.statusText}`);
+  }
+}
 
-    login(email, password) {
-        return fetch(`${this._url}/singin`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({email, password})
-            },
-          ).then((res) => this._checkStatus(res));
-    };
+export function login(data) {
+  return fetch(`${BASE_URL}/singin`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ 
+        email: data.email, 
+        password: data.password }),
+  }).then((res) => checkStatus(res));
+}
 
-    register(email, password) {
-        return fetch(`${this._url}/singin`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({email, password})
-            },
-          ).then((res) => this._checkStatus(res));
-    };
+export function register(data) {
+  return fetch(`${BASE_URL}/singup`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ 
+        password: data.password,
+        email: data.email
+        }),
+  }).then((res) => checkStatus(res))
+  .then((data) => {
+    return data;
+  })
+}
 
-    getContent = (token) => {
-        return fetch(`${this._url}users/me`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                "Authorization" : `Bearer ${token}`
-            },
-            body: JSON.stringify({email, password})
-            },
-          ).then((res) => this._checkStatus(res))
-          .then(data => { 
-            return data;
-        })
-    }
-};
-
-export const auth = new Auth("https://auth.nomoreparties.co");
+export function getContent(token) {
+    return fetch(`${BASE_URL}/users/me`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => checkStatus(res))
+      .then(data => { 
+        return data; 
+      }) 
+}

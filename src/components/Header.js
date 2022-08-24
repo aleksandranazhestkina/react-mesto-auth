@@ -10,7 +10,7 @@ function Header(props) {
         <Route exact path="/">
           <div className="header__links">
             <p className="header__email">{props.email}</p>
-            <button to="/sing-in" className="header__exit">Выйти</button>
+            <button to="/sing-in" className="header__exit" onClick={props.onClick}>Выйти</button>
           </div>
         </Route>
         <Route path="/sing-in">
