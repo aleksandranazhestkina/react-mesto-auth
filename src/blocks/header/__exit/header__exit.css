@@ -7,6 +7,7 @@
     color: #A9A9A9;
     transform: opacity 0.4s;
     margin-left: 24px;
+    background-color: inherit;
 }
 
 .header__exit:hover {

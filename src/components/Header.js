@@ -1,6 +1,6 @@
-import React from 'react';
-import { Switch, Route, Link } from 'react-router-dom';
-import HeaderLogo from '../images/HeaderLogo.svg';
+import React from "react";
+import { Switch, Route, Link } from "react-router-dom";
+import HeaderLogo from "../images/HeaderLogo.svg";
 
 function Header(props) {
   return (
@@ -10,14 +10,24 @@ function Header(props) {
         <Route exact path="/">
           <div className="header__links">
             <p className="header__email">{props.email}</p>
-            <button to="/sing-in" className="header__exit" onClick={props.onClick}>Выйти</button>
+            <button
+              to="/sign-in"
+              className="header__exit"
+              onClick={props.onSingOut}
+            >
+              Выйти
+            </button>
           </div>
         </Route>
-        <Route path="/sing-in">
-          <Link to="./sing-up" className='header__auth'>Регистрация</Link>
+        <Route path="/sign-in">
+          <Link to="./sign-up" className="header__auth">
+            Регистрация
+          </Link>
         </Route>
-        <Route path="/sing-up">
-          <Link to="./sing-in" className='header__auth'>Войти</Link>
+        <Route path="/sign-up">
+          <Link to="./sign-in" className="header__auth">
+            Войти
+          </Link>
         </Route>
       </Switch>
     </header>

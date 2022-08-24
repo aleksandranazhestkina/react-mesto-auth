@@ -141,14 +141,13 @@ function App() {
       });
   }
 
-  function onRegistration(data) {
-      auth
-      .register(data)
-      .then((data) => {
-        setEmail(data.email)
+  function onRegistration(email, password) {
+    return auth
+      .register(email, password)
+      .then(() => {
         setRegistrationIn(true);
         setIsInfoTooltipOpen(true);
-        history.push("/sign-in"); 
+        history.push("/sign-in");
       })
       .catch((err) => {
         setRegistrationIn(false);
@@ -157,51 +156,55 @@ function App() {
       });
   }
 
-  function onLogin(data) {
-    auth
-      .login(data)
-      .then((res) => {
-        if (res.token) {
-          setRegistrationIn(true);
-          setIsInfoTooltipOpen(true);
-          setIsLoggedIn(true);
-          setEmail(data.email);
-          localStorage.setItem("jwt", res.token);
-          history.push("/");
+  function onLogin(email, password) {
+    return auth
+      .login(email, password)
+      .then((data) => {
+        if (data.token) {
+          localStorage.setItem("token", data.token)
+          setIsLoggedIn(true)
+          history.push("/")
+          setEmail(email)
         }
       })
       .catch((err) => {
-        setRegistrationIn(false);
-        setIsInfoTooltipOpen(true);
-        console.log(err);
+        setRegistrationIn(false)
+        setIsInfoTooltipOpen(true)
+        console.log(err)
       });
   }
 
+  React.useEffect(() => {
+    if (isLoggedIn) {
+      history.push("/")
+    }
+  }, [isLoggedIn]);
+
   function checkToken() {
-    const token = localStorage.getItem("jwt");
-  if (token) {
-    auth
-      .getContent(token)
-      .then((res) => {
-          setEmail(res.data.email);
-          setIsLoggedIn(true);
-          history.push("/");
-      })
-      .catch((err) => {
-        history.push("/sing-in");
-        console.log(err);
-      });
+    const token = localStorage.getItem("token");
+    if (token) {
+      auth
+        .getContent(token)
+        .then((res) => {
+          setEmail(res.data.email)
+          setIsLoggedIn(true)
+          history.push("/")
+        })
+        .catch((err) => {
+          history.push("/sign-in")
+          console.log(err)
+        });
     }
   }
 
   React.useEffect(() => {
-    checkToken();
+    checkToken()
   }, []);
 
   function onSingOut() {
-    localStorage.removeItem("jwt");
-    setIsLoggedIn(false);
-    history.push("/sing-in");
+    localStorage.removeItem("token")
+    setIsLoggedIn(false)
+    history.push("/sign-in")
   }
 
   return (
@@ -210,8 +213,13 @@ function App() {
         <Header isLoggedIn={isLoggedIn} email={email} onSingOut={onSingOut} />
 
         <Switch>
+          <Route path="/sign-in">
+            <Login onLogin={onLogin} />
+          </Route>
+          <Route path="/sign-up">
+            <Register onRegistration={onRegistration} />
+          </Route>
           <ProtectedRoute
-            exact
             path="/"
             component={Main}
             isLoggedIn={isLoggedIn}
@@ -223,12 +231,6 @@ function App() {
             onCardDelete={handleCardDelete}
             cards={cards}
           />
-          <Route path="/sing-in">
-            <Login onLogin={onLogin} />
-          </Route>
-          <Route path="/sing-up">
-            <Register onRegistration={onRegistration} />
-          </Route>
         </Switch>
 
         <Footer />
