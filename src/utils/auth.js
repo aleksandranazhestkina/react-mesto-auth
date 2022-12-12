@@ -1,4 +1,4 @@
-export const BASE_URL = "https://auth.nomoreparties.co";
+export const BASE_URL = "https://api.nazhestkina.nomoredomains.club";
 
 function checkStatus(res) {
   if (res.ok) {
@@ -11,6 +11,7 @@ function checkStatus(res) {
 export function login(email, password) {
   return fetch(`${BASE_URL}/signin`, {
     method: "POST",
+    credentials: 'include',
     headers: {
       "Content-Type": "application/json",
     },
@@ -38,12 +39,12 @@ export function register(email, password) {
     })
 }
 
-export function getContent(token) {
+export function getContent(jwt) {
   return fetch(`${BASE_URL}/users/me`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${jwt}`,
     },
   })
     .then((res) => checkStatus(res))

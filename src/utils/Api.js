@@ -1,9 +1,15 @@
 class Api {
-  constructor(options) {
-    this._url = options.url;
-    this._token = options.token;
+  constructor({baseUrl, headers}) {
+    this._url = baseUrl;
+    this._headers = headers;
   }
-
+  _getHeaders() {
+    const jwt = localStorage.getItem('jwt');
+    return {
+      'Authorization': `Bearer ${jwt}`,
+      ...this._headers,
+    };
+  }
   _checkRequestResult(res) {
     if (res.ok) {
       return res.json();
@@ -17,27 +23,20 @@ class Api {
 
   getUserInfo() {
     return fetch(`${this._url}users/me`, {
-      headers: {
-        authorization: this._token,
-      },
+      headers: this._getHeaders()
     }).then((res) => this._checkRequestResult(res));
   }
 
   getInitialCards() {
     return fetch(`${this._url}cards`, {
-      headers: {
-        authorization: this._token,
-      },
+      headers: this._getHeaders()
     }).then((res) => this._checkRequestResult(res));
   }
 
   editProfile(name, job) {
     return fetch(`${this._url}users/me`, {
       method: 'PATCH',
-      headers: {
-        authorization: this._token,
-        'Content-Type': 'application/json'
-      },
+      headers: this._getHeaders(),
       body: JSON.stringify({
         name: name,
         about: job
@@ -48,10 +47,7 @@ class Api {
   addNewCard(data) {
     return fetch(`${this._url}cards`, {
       method: 'POST',
-      headers: {
-        authorization: this._token,
-        'Content-Type': 'application/json'
-      },
+      headers: this._getHeaders(),
       body: JSON.stringify({
         name: data.name,
         link: data.link
@@ -62,19 +58,14 @@ class Api {
   deleteCard(id) {
     return fetch(`${this._url}cards/${id}`, {
       method: 'DELETE',
-      headers: {
-        authorization: this._token,
-      }
+      headers: this._getHeaders()
     }).then((res) => this._checkRequestResult(res));
   }
 
   editAvatar(data) {
     return fetch(`${this._url}users/me/avatar`, {
       method: 'PATCH',
-      headers: {
-        authorization: this._token,
-        'Content-Type': 'application/json'
-      },
+      headers: this._getHeaders(),
       body: JSON.stringify({
         avatar: data.avatar,
       })
@@ -92,24 +83,21 @@ class Api {
   addLike(id) {
     return fetch(`${this._url}cards/${id}/likes`, {
       method: 'PUT',
-      headers: {
-        authorization: this._token,
-      }
+      headers: this._getHeaders()
     }).then((res) => this._checkRequestResult(res));
   }
 
   deleteLike(id) {
     return fetch(`${this._url}cards/${id}/likes`, {
       method: 'DELETE',
-      headers: {
-        authorization: this._token,
-      }
+      headers: this._getHeaders()
     }).then((res) => this._checkRequestResult(res));
   }
 }
 
 export const api = new Api({
-  url: 'https://mesto.nomoreparties.co/v1/cohort-44/',
-  token: 'd2530845-e697-44f9-b4fb-404b485e2dca',
-  'Content-Type': 'application/json'
+  url: 'https://api.nazhestkina.nomoredomains.club',
+  headers: {
+    'Content-Type': 'application/json'
+  }
 });
