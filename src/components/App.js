@@ -176,8 +176,8 @@ function App() {
     if (token) {
       auth
         .getContent(token)
-        .then((res) => {
-          setEmail(res.data.email)
+        .then(() => {
+          setEmail(email)
           setIsLoggedIn(true)
           history.push("/")
         })

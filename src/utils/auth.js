@@ -1,4 +1,4 @@
-export const BASE_URL = "https://api.nazhestkina.nomoredomains.club";
+export const BASE_URL = "http://localhost:3001";
 
 function checkStatus(res) {
   if (res.ok) {
@@ -11,7 +11,6 @@ function checkStatus(res) {
 export function login(email, password) {
   return fetch(`${BASE_URL}/signin`, {
     method: "POST",
-    credentials: 'include',
     headers: {
       "Content-Type": "application/json",
     },

@@ -3,13 +3,13 @@ class Api {
     this._url = baseUrl;
     this._headers = headers;
   }
-  _getHeaders() {
-    const jwt = localStorage.getItem('jwt');
-    return {
-      'Authorization': `Bearer ${jwt}`,
-      ...this._headers,
-    };
-  }
+  // _getHeaders() {
+  //   const jwt = localStorage.getItem('jwt');
+  //   return {
+  //     'Authorization': `Bearer ${jwt}`,
+  //     ...this._headers,
+  //   };
+  // }
   _checkRequestResult(res) {
     if (res.ok) {
       return res.json();
@@ -23,20 +23,29 @@ class Api {
 
   getUserInfo() {
     return fetch(`${this._url}users/me`, {
-      headers: this._getHeaders()
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Content-Type': 'application/json'
+      },
     }).then((res) => this._checkRequestResult(res));
   }
 
   getInitialCards() {
     return fetch(`${this._url}cards`, {
-      headers: this._getHeaders()
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Content-Type': 'application/json'
+      },
     }).then((res) => this._checkRequestResult(res));
   }
 
   editProfile(name, job) {
     return fetch(`${this._url}users/me`, {
       method: 'PATCH',
-      headers: this._getHeaders(),
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         name: name,
         about: job
@@ -47,7 +56,10 @@ class Api {
   addNewCard(data) {
     return fetch(`${this._url}cards`, {
       method: 'POST',
-      headers: this._getHeaders(),
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         name: data.name,
         link: data.link
@@ -58,14 +70,20 @@ class Api {
   deleteCard(id) {
     return fetch(`${this._url}cards/${id}`, {
       method: 'DELETE',
-      headers: this._getHeaders()
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Content-Type': 'application/json'
+      },
     }).then((res) => this._checkRequestResult(res));
   }
 
   editAvatar(data) {
     return fetch(`${this._url}users/me/avatar`, {
       method: 'PATCH',
-      headers: this._getHeaders(),
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         avatar: data.avatar,
       })
@@ -83,20 +101,26 @@ class Api {
   addLike(id) {
     return fetch(`${this._url}cards/${id}/likes`, {
       method: 'PUT',
-      headers: this._getHeaders()
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Content-Type': 'application/json'
+      },
     }).then((res) => this._checkRequestResult(res));
   }
 
   deleteLike(id) {
     return fetch(`${this._url}cards/${id}/likes`, {
       method: 'DELETE',
-      headers: this._getHeaders()
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Content-Type': 'application/json'
+      },
     }).then((res) => this._checkRequestResult(res));
   }
 }
 
 export const api = new Api({
-  url: 'https://api.nazhestkina.nomoredomains.club',
+  url: 'http://localhost:3001',
   headers: {
     'Content-Type': 'application/json'
   }
