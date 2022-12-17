@@ -1,15 +1,9 @@
+
 class Api {
-  constructor({baseUrl, headers}) {
-    this._url = baseUrl;
-    this._headers = headers;
+  constructor({url}) {
+    this._url = url;
   }
-  // _getHeaders() {
-  //   const jwt = localStorage.getItem('jwt');
-  //   return {
-  //     'Authorization': `Bearer ${jwt}`,
-  //     ...this._headers,
-  //   };
-  // }
+
   _checkRequestResult(res) {
     if (res.ok) {
       return res.json();
@@ -22,42 +16,42 @@ class Api {
   // Загрузка информации о пользователе
 
   getUserInfo() {
-    return fetch(`${this._url}users/me`, {
+    return fetch(`${this._url}/users/me`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`,
         'Content-Type': 'application/json'
       },
     }).then((res) => this._checkRequestResult(res));
   }
 
   getInitialCards() {
-    return fetch(`${this._url}cards`, {
+    return fetch(`${this._url}/cards`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`,
         'Content-Type': 'application/json'
       },
     }).then((res) => this._checkRequestResult(res));
   }
 
-  editProfile(name, job) {
-    return fetch(`${this._url}users/me`, {
+  editProfile(info) {
+    return fetch(`${this._url}/users/me`, {
       method: 'PATCH',
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        name: name,
-        about: job
+        name: info.name,
+        about: info.about
       })
     }).then((res) => this._checkRequestResult(res));
   }
 
   addNewCard(data) {
-    return fetch(`${this._url}cards`, {
+    return fetch(`${this._url}/cards`, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -67,25 +61,25 @@ class Api {
     }).then((res) => this._checkRequestResult(res));
   }
 
-  deleteCard(id) {
-    return fetch(`${this._url}cards/${id}`, {
+  deleteCard(data) {
+    return fetch(`${this._url}/cards/${data._id}`, {
       method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`,
         'Content-Type': 'application/json'
       },
     }).then((res) => this._checkRequestResult(res));
   }
 
-  editAvatar(data) {
-    return fetch(`${this._url}users/me/avatar`, {
+  editAvatar(input) {
+    return fetch(`${this._url}/users/me/avatar`, {
       method: 'PATCH',
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        avatar: data.avatar,
+        avatar: input.avatar,
       })
     }).then((res) => this._checkRequestResult(res));
   }
@@ -98,21 +92,21 @@ class Api {
     }
   }
 
-  addLike(id) {
-    return fetch(`${this._url}cards/${id}/likes`, {
+  addLike(data) {
+    return fetch(`${this._url}/cards/${data._id}/likes`, {
       method: 'PUT',
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`,
         'Content-Type': 'application/json'
       },
     }).then((res) => this._checkRequestResult(res));
   }
 
-  deleteLike(id) {
-    return fetch(`${this._url}cards/${id}/likes`, {
+  deleteLike(data) {
+    return fetch(`${this._url}/cards/${data._id}/likes`, {
       method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`,
         'Content-Type': 'application/json'
       },
     }).then((res) => this._checkRequestResult(res));
@@ -120,8 +114,5 @@ class Api {
 }
 
 export const api = new Api({
-  url: 'http://localhost:3001',
-  headers: {
-    'Content-Type': 'application/json'
-  }
-});
+  url: 'http://localhost:3001'
+  });

@@ -37,11 +37,32 @@ function App() {
   const [email, setEmail] = React.useState("");
   const history = useHistory();
 
+  function checkToken() {
+    const token  = localStorage.getItem("token");
+    if (token) {
+      auth
+        .getContent(token)
+        .then(() => {
+          setEmail(email)
+          setIsLoggedIn(true)
+          history.push("/")
+        })
+        .catch((err) => {
+          history.push("/signin")
+          console.log(err)
+        });
+    }
+  }
+
+  React.useEffect(() => {
+    checkToken()
+  }, []);
+
   React.useEffect(() => {
     if (isLoggedIn)
-      Promise.all([api.getUserInfo(), api.getInitialCards()])
-        .then(([data, cards]) => {
-          setCurrentUser(data);
+       Promise.all([api.getUserInfo(), api.getInitialCards()])
+        .then(([user, cards]) => {
+          setCurrentUser(user);
           setCards(cards);
         })
         .catch((err) => console.log(err));
@@ -74,7 +95,7 @@ function App() {
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
 
     // Отправляем запрос в API и получаем обновлённые данные карточки
     api
@@ -89,16 +110,16 @@ function App() {
 
   function handleCardDelete(card) {
     api
-      .deleteCard(card._id)
+      .deleteCard(card)
       .then(() => {
         setCards((state) => state.filter((c) => c._id !== card._id && c));
       })
       .catch((err) => console.log(err));
   }
 
-  function handleUpdateUser(data) {
+  function handleUpdateUser(info) {
     api
-      .editProfile(data.name, data.about)
+      .editProfile(info)
       .then((res) => {
         setCurrentUser(res);
       })
@@ -108,9 +129,9 @@ function App() {
       });
   }
 
-  function handleUpdateAvatar(data) {
+  function handleUpdateAvatar(input) {
     api
-      .editAvatar(data)
+      .editAvatar(input)
       .then((res) => {
         setCurrentUser(res);
       })
@@ -138,7 +159,7 @@ function App() {
       .then(() => {
         setRegistrationIn(true);
         setIsInfoTooltipOpen(true);
-        history.push("/sign-in");
+        history.push("/signin");
       })
       .catch((err) => {
         setRegistrationIn(false);
@@ -151,8 +172,8 @@ function App() {
     return auth
       .login(email, password)
       .then((data) => {
-        if (data.token) {
-          localStorage.setItem("token", data.token)
+        if (data.jwt) {
+          localStorage.setItem("jwt", data.jwt)
           setIsLoggedIn(true)
           history.push("/")
           setEmail(email)
@@ -165,49 +186,28 @@ function App() {
       });
   }
 
-  React.useEffect(() => {
-    if (isLoggedIn) {
-      history.push("/")
-    }
-  }, [isLoggedIn]);
+  // React.useEffect(() => {
+  //   if (isLoggedIn) {
+  //     history.push("/")
+  //   }
+  // }, [isLoggedIn]);
 
-  function checkToken() {
-    const token = localStorage.getItem("token");
-    if (token) {
-      auth
-        .getContent(token)
-        .then(() => {
-          setEmail(email)
-          setIsLoggedIn(true)
-          history.push("/")
-        })
-        .catch((err) => {
-          history.push("/sign-in")
-          console.log(err)
-        });
-    }
-  }
-
-  React.useEffect(() => {
-    checkToken()
-  }, []);
-
-  function onSingOut() {
+  function onSignOut() {
     localStorage.removeItem("token")
     setIsLoggedIn(false)
-    history.push("/sign-in")
+    history.push("/signin")
   }
 
   return (
     <div>
       <CurrentUserContext.Provider value={currentUser}>
-        <Header isLoggedIn={isLoggedIn} email={email} onSingOut={onSingOut} />
+        <Header isLoggedIn={isLoggedIn} email={email} onSingOut={onSignOut} />
 
         <Switch>
-          <Route path="/sign-in">
+          <Route path="/signin">
             <Login onLogin={onLogin} />
           </Route>
-          <Route path="/sign-up">
+          <Route path="/signup">
             <Register onRegistration={onRegistration} />
           </Route>
           <ProtectedRoute

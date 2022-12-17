@@ -11,7 +11,7 @@ function Header(props) {
           <div className="header__links">
             <p className="header__email">{props.email}</p>
             <button
-              to="/sign-in"
+              to="/signin"
               className="header__exit"
               onClick={props.onSingOut}
             >
@@ -19,13 +19,13 @@ function Header(props) {
             </button>
           </div>
         </Route>
-        <Route path="/sign-in">
-          <Link to="./sign-up" className="header__auth">
+        <Route path="/signin">
+          <Link to="./signup" className="header__auth">
             Регистрация
           </Link>
         </Route>
-        <Route path="/sign-up">
-          <Link to="./sign-in" className="header__auth">
+        <Route path="/signup">
+          <Link to="./signin" className="header__auth">
             Войти
           </Link>
         </Route>
