@@ -93,7 +93,7 @@ class Api {
   }
 
   addLike(cardId) {
-    return fetch(`${this._url}/cards/${cardId}/likes`, {
+    return fetch(`${this._url}/cards/${cardId._id}/likes`, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem("token")}`,
@@ -103,7 +103,7 @@ class Api {
   }
 
   deleteLike(cardId) {
-    return fetch(`${this._url}/cards/${cardId}/likes`, {
+    return fetch(`${this._url}/cards/${cardId._id}/likes`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem("token")}`,

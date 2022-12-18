@@ -98,15 +98,19 @@ function App() {
     // Снова проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some((i) => i === currentUser._id);
 
-    // Отправляем запрос в API и получаем обновлённые данные карточки
-    api
-      .changeLikeCardStatus(card._id, !isLiked)
-      .then((newCard) => {
-        setCards((state) =>
-          state.map((c) => (c._id === card._id ? newCard : c))
-        );
-      })
-      .catch((err) => console.log(err));
+    if (!isLiked) {
+      api.addLike(card)
+        .then(newCard => {
+          setCards(state => state.map(c => c._id === card._id ? newCard : c))
+        })
+        .catch(err => console.log(err))
+      } else {
+        api.deleteLike(card)
+        .then(newCard => {
+          setCards(state => state.map(c => c._id === card._id ? newCard : c))
+        })
+        .catch(err => console.log(err))
+      }
   }
 
   function handleCardDelete(card) {
@@ -187,11 +191,11 @@ function App() {
       });
   }
 
-  React.useEffect(() => {
-    if (isLoggedIn) {
-      history.push("/")
-    }
-  }, [isLoggedIn]);
+  // React.useEffect(() => {
+  //   if (isLoggedIn) {
+  //     history.push("/")
+  //   }
+  // }, [isLoggedIn]);
 
   function onSignOut() {
     localStorage.removeItem("token")

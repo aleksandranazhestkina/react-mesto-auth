@@ -38,12 +38,12 @@ export function register(email, password) {
     })
 }
 
-export function getContent(token) {
+export function getContent(jwt) {
   return fetch(`${BASE_URL}/users/me`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`,
+      "Authorization": `Bearer ${jwt}`,
     },
   })
     .then((res) => checkStatus(res))
