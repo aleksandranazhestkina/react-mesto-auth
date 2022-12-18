@@ -36,18 +36,18 @@ function App() {
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
   const [email, setEmail] = React.useState("");
   const history = useHistory();
+  const token  = localStorage.getItem("token");
   
   React.useEffect(() => {
     checkToken()
   }, []);
 
   function checkToken() {
-    const token  = localStorage.getItem("token");
     if (token) {
       auth
         .getContent(token)
-        .then(() => {
-          setEmail(email)
+        .then((data) => {
+          setEmail(data.email)
           setIsLoggedIn(true)
           history.push("/")
         })
@@ -59,9 +59,11 @@ function App() {
   }
 
   React.useEffect(() => {
+    
     if (isLoggedIn)
        Promise.all([api.getUserInfo(), api.getInitialCards()])
         .then(([user, cards]) => {
+          console.log(user);
           setCurrentUser(user);
           setCards(cards);
         })
@@ -180,7 +182,7 @@ function App() {
           localStorage.setItem("token", data.token)
           setIsLoggedIn(true)
           history.push("/")
-          setEmail(email)
+          setEmail(data.email)
         }
       })
       .catch((err) => {

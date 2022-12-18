@@ -2,7 +2,9 @@ import React from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import HeaderLogo from "../images/HeaderLogo.svg";
 
+
 function Header(props) {
+
   return (
     <header className="header">
       <img className="header__logo" src={HeaderLogo} alt="Место" />
