@@ -115,5 +115,5 @@ class Api {
 }
 
 export const api = new Api({
-  url: 'http://localhost:3001'
+  url: 'http://api.nazhestkina.nomoredomains.club'
   });
