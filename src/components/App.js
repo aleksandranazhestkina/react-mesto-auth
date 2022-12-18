@@ -36,9 +36,12 @@ function App() {
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
   const [email, setEmail] = React.useState("");
   const history = useHistory();
+  
+  React.useEffect(() => {
+    checkToken()
+  }, []);
 
   function checkToken() {
-    
     const token  = localStorage.getItem("token");
     if (token) {
       auth
@@ -54,10 +57,6 @@ function App() {
         });
     }
   }
-
-  React.useEffect(() => {
-    checkToken()
-  }, []);
 
   React.useEffect(() => {
     if (isLoggedIn)
@@ -117,7 +116,7 @@ function App() {
     api
       .deleteCard(card)
       .then(() => {
-        setCards((state) => state.filter((c) => c._id !== card._id && c));
+        setCards((state) => state.filter((c) => c._id !== card._id));
       })
       .catch((err) => console.log(err));
   }

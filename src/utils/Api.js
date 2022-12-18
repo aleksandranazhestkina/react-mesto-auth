@@ -1,3 +1,4 @@
+const token = localStorage.getItem("token");
 
 class Api {
   constructor({url}) {
@@ -18,7 +19,7 @@ class Api {
   getUserInfo() {
     return fetch(`${this._url}/users/me`, {
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
     }).then((res) => this._checkRequestResult(res));
@@ -27,7 +28,7 @@ class Api {
   getInitialCards() {
     return fetch(`${this._url}/cards`, {
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
     }).then((res) => this._checkRequestResult(res));
@@ -37,7 +38,7 @@ class Api {
     return fetch(`${this._url}/users/me`, {
       method: 'PATCH',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -51,7 +52,7 @@ class Api {
     return fetch(`${this._url}/cards`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -65,7 +66,7 @@ class Api {
     return fetch(`${this._url}/cards/${data._id}`, {
       method: 'DELETE',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
     }).then((res) => this._checkRequestResult(res));
@@ -75,7 +76,7 @@ class Api {
     return fetch(`${this._url}/users/me/avatar`, {
       method: 'PATCH',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -85,7 +86,7 @@ class Api {
   }
 
   changeLikeCardStatus(card, isLiked) {
-    if (isLiked) {
+    if (!isLiked) {
       return this.addLike(card);
     } else {
       return this.deleteLike(card);
@@ -96,7 +97,7 @@ class Api {
     return fetch(`${this._url}/cards/${cardId._id}/likes`, {
       method: 'PUT',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
     }).then((res) => this._checkRequestResult(res));
@@ -106,7 +107,7 @@ class Api {
     return fetch(`${this._url}/cards/${cardId._id}/likes`, {
       method: 'DELETE',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
     }).then((res) => this._checkRequestResult(res));

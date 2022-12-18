@@ -3,15 +3,15 @@ import { CurrentUserContext } from "../context/CurrentUserContext";
 
 function Card(props) {
     const currentUser = React.useContext(CurrentUserContext);
-
+    console.log(props.card);
     // Определяем, являемся ли мы владельцем текущей карточки
-    const isOwn = props.card.owner._id === currentUser._id;
+    const isOwn = props.card.owner === currentUser._id;
 
     const cardDeleteButtonClassName = (
         `element__basket ${isOwn ? 'element__basket_visible' : 'element__basket_hidden'}`
     );
 
-    const isLiked = props.card.likes.some(i => i._id === currentUser._id);
+    const isLiked = props.card.likes.some(like => like === currentUser._id);
 
     const cardLikeButtonClassName = (
         `element__like ${isLiked && 'element__like_active'}`
