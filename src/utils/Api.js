@@ -18,7 +18,7 @@ class Api {
   getUserInfo() {
     return fetch(`${this._url}/users/me`, {
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
         'Content-Type': 'application/json'
       },
     }).then((res) => this._checkRequestResult(res));
@@ -27,7 +27,7 @@ class Api {
   getInitialCards() {
     return fetch(`${this._url}/cards`, {
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
         'Content-Type': 'application/json'
       },
     }).then((res) => this._checkRequestResult(res));
@@ -37,7 +37,7 @@ class Api {
     return fetch(`${this._url}/users/me`, {
       method: 'PATCH',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -51,7 +51,7 @@ class Api {
     return fetch(`${this._url}/cards`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -65,7 +65,7 @@ class Api {
     return fetch(`${this._url}/cards/${data._id}`, {
       method: 'DELETE',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
         'Content-Type': 'application/json'
       },
     }).then((res) => this._checkRequestResult(res));
@@ -75,7 +75,7 @@ class Api {
     return fetch(`${this._url}/users/me/avatar`, {
       method: 'PATCH',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -84,29 +84,29 @@ class Api {
     }).then((res) => this._checkRequestResult(res));
   }
 
-  changeLikeCardStatus(cardId, isLiked) {
+  changeLikeCardStatus(card, isLiked) {
     if (isLiked) {
-      return this.addLike(cardId);
+      return this.addLike(card);
     } else {
-      return this.deleteLike(cardId);
+      return this.deleteLike(card);
     }
   }
 
-  addLike(data) {
-    return fetch(`${this._url}/cards/${data._id}/likes`, {
+  addLike(cardId) {
+    return fetch(`${this._url}/cards/${cardId}/likes`, {
       method: 'PUT',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
         'Content-Type': 'application/json'
       },
     }).then((res) => this._checkRequestResult(res));
   }
 
-  deleteLike(data) {
-    return fetch(`${this._url}/cards/${data._id}/likes`, {
+  deleteLike(cardId) {
+    return fetch(`${this._url}/cards/${cardId}/likes`, {
       method: 'DELETE',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem("jwt")}`,
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
         'Content-Type': 'application/json'
       },
     }).then((res) => this._checkRequestResult(res));

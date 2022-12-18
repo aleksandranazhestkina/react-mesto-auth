@@ -38,6 +38,7 @@ function App() {
   const history = useHistory();
 
   function checkToken() {
+    
     const token  = localStorage.getItem("token");
     if (token) {
       auth
@@ -172,8 +173,8 @@ function App() {
     return auth
       .login(email, password)
       .then((data) => {
-        if (data.jwt) {
-          localStorage.setItem("jwt", data.jwt)
+        if (data.token) {
+          localStorage.setItem("token", data.token)
           setIsLoggedIn(true)
           history.push("/")
           setEmail(email)
@@ -186,11 +187,11 @@ function App() {
       });
   }
 
-  // React.useEffect(() => {
-  //   if (isLoggedIn) {
-  //     history.push("/")
-  //   }
-  // }, [isLoggedIn]);
+  React.useEffect(() => {
+    if (isLoggedIn) {
+      history.push("/")
+    }
+  }, [isLoggedIn]);
 
   function onSignOut() {
     localStorage.removeItem("token")
