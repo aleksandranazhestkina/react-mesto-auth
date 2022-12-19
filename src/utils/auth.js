@@ -1,4 +1,4 @@
-export const BASE_URL = "http://api.nazhestkina.nomoredomains.club";
+export const BASE_URL = "https://api.nazhestkina.nomoredomains.club";
 
 function checkStatus(res) {
   if (res.ok) {

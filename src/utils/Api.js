@@ -115,5 +115,5 @@ class Api {
 }
 
 export const api = new Api({
-  url: 'http://api.nazhestkina.nomoredomains.club'
+  url: 'https://api.nazhestkina.nomoredomains.club'
   });
